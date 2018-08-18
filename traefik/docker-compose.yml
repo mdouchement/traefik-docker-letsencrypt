@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  traefik:
+    image: traefik:1.6-alpine
+    restart: always
+    container_name: traefik
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/traefik/traefik.toml:/traefik.toml:ro
+      - $PWD/traefik/acme.json:/acme.json
+    # labels: # Expose dashboard?
+    #   - "traefik.backend=traefik-dashboard"
+    #   - "traefik.docker.network=traefik"
+    #   - "traefik.frontend.rule=Host:dashboard.example.com"
+    #   - "traefik.enable=true"
+    #   - "traefik.port=8080"
+    #   - "traefik.default.protocol=http"
+    #   - "traefik.frontend.auth.basic=YOUR-BASIC-AUTH-TOKEN"
+
+networks:
+  traefik:
+    external: true
